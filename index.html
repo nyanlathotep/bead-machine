@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Bead Machine: Punktasia</title>
+    <title>Punktasia</title>
     <link rel="stylesheet" href="punktasia.css">
     <style>
       button { font-family:Courier New; }
@@ -33,6 +33,8 @@
     </td></tr></table>
     </div>
     <button id="clear_resources_btn" class="intangible">Clear</button>
+    <button id="local_save_btn">Local Save</button>
+    <button id="local_load_btn">Local Load</button>
     <button id="save_btn">Save</button><span id="save_response"></span>
     <div id="button_bar" class="invisible">
       <center>
@@ -279,7 +281,7 @@ class="broken"
       "Once you are enlightened, you can appreciate what you have...<br>Let me show you all that you have achieved,<br>and what you have yet to do."<br><br>
       <span style="white-space:pre" id="achievements"></span>
     </span>
-    <br><font color="#DDDDDD" style="cursor: pointer;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;" id="version">Version 1.15</font><br>
+    <br><font color="#DDDDDD" style="cursor: pointer;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;" id="version">Version 1.14</font><br>
     <span id="revision_history" class="invisible">
       v1.0 Initial Release<br>
       v1.1 Fix for saving enlightenment state<br>
@@ -295,9 +297,9 @@ class="broken"
       v1.11 Commas<br>
       v1.12 Commas give way to scientific notation if needed, new win condition<br>
       v1.13 Everybody has a price<br>
-      v1.14 A few new parts available in the store, fix for even x1000, ability to visualize machine input/output<br>
-      v1.15 The first one is cheaper
+      v1.14 A few new parts available in the store, fix for even x1000, ability to visualize machine input/output
     </span>
-    <script src="punktasia.dart.js"></script>
+    <script type="application/dart" src="punktasia.dart"></script>
+    <script src="packages/browser/dart.js"></script>
   </body>
 </html>

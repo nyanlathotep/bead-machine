@@ -91,6 +91,7 @@ class GameSystem {
     if (!loading) {
       debugSetup();
     }
+    localLoad();
   }
   
   void debugSetup() {
@@ -349,6 +350,26 @@ class GameSystem {
     gSetVisible(village.enlightened != 0, "quest_btn");
   }
 
+  void localLoad() {
+    String save = window.localStorage['save'];
+    if (save != null) {
+      load(save);
+    }
+  }
+
+  void localSave() {
+    String save = JSON.encode(this);
+    window.localStorage['save'] = save;
+  }
+
+  void clickLocalSaveButton(MouseEvent event) {
+    localSave();
+  }
+
+  void clickLocalLoadButton(MouseEvent event) {
+    localLoad();
+  }
+
   void clickMachineButton(MouseEvent event) {
     setMainPanel(MACHINE_PANEL);
     querySelector("#main_btn").classes.remove("active");
@@ -377,6 +398,8 @@ class GameSystem {
     querySelector("#modeShade input:first-child").onChange.listen(changeMode1);
     querySelector("#modeShade input:nth-child(2)").onChange.listen(changeMode2);
     querySelector("#save_btn").onClick.listen(clickSaveButton);
+    querySelector("#local_save_btn").onClick.listen(clickLocalSaveButton);
+    querySelector("#local_load_btn").onClick.listen(clickLocalLoadButton);
     querySelector("#vend_btn").onClick.listen(clickVend);
     querySelector("#free_money_btn").onClick.listen(clickFreeMoneyButton);
     querySelector("#free_lunch_btn").onClick.listen(clickFreeLunchButton);
