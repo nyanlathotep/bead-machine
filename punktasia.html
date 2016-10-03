@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Punktasia</title>
+    <link rel="stylesheet" href="punktasia.css">
+    <style>
+      button { font-family:Courier New; }
+      body { font-family:Courier New; }
+      .invisible { visibility:hidden; }
+      .intangible { display: none; }
+      .active { background-color: #FFCCAA }
+      .broken { color: #FF0000; font-weight:bold; }
+      .msg { width: 250px; }
+    </style>
+  </head>
+  <body>
+    <div class="shade hiddenShade" id="modeShade">
+    <div class="inputArea">
+    <span class="radioContainer">
+    Mode:
+    <input type="radio" name='mode' checked>Adventure
+    <input type="radio" name='mode'>Sandbox
+    </span></div>
+    <!--<div class="plusTab">+</div>-->
+    </div>
+    <div style="position:absolute;left:250px;top:0px;" class="intangible" id="popup">
+    <table bgcolor="#F8F8F8" border=0><tr><td>
+    <pre style="display:inline" id="popup_contents">+------------------------+
+| ACHIEVEMENT UNLOCKED   |
++------------------------+</pre>
+    </td></tr></table>
+    </div>
+    <button id="clear_resources_btn" class="intangible">Clear</button>
+    <button id="save_btn">Save</button><span id="save_response"></span>
+    <div id="button_bar" class="invisible">
+      <center>
+      <button id="main_btn" class="active" >Stuff</button>
+      <button id="machine_btn">Machine</button>
+      <button id="quest_btn" class="invisible" >Quest</button>
+      <button id="hovel_btn" class="invisible">Hovel</button>
+      </center>
+    </div>
+    <table width=900 border=0>
+    <tr><td width=300>
+      <table>
+        <tr id="player_money_container">
+          <td>Money:</td><td><div id="player_money"></div></td><td><div id="player_money_delta"></div></td>
+        </tr>
+        <tr id="free_lunches_container" class="invisible">
+          <td>Free Lunches:</td><td><div id="free_lunches"></div></td><td><div id="free_lunches_delta"></div></td>
+        </tr>
+        <tr id="player_beads_container" class="invisible">
+          <td>Beads:</td><td><div id="player_beads"></div></td><td><div id="player_beads_delta"></div></td>
+        </tr>
+        <tr id="player_triangles_container" class="invisible">
+          <td>Triangles:</td><td><div id="player_triangles"></div></td><td><div id="player_triangles_delta"></div></td>
+        </tr>
+      </table>
+    </td><td width=300>
+      <table id="quest_stats" class="invisible">
+        <tr id="student_container">
+          <td>Students:</td><td><div id="student"></div></td><td><div id="student_delta"></div></td>
+        </tr>
+        <tr id="vending_machines_container" class="invisible">
+          <td>Vending Machines:</td><td><div id="vending_machines"></div></td><td><div id="vending_machines_delta"></div></td>
+        </tr>
+        <tr id="worker_container" class="invisible">
+          <td>Workers:</td><td><div id="worker"></div></td><td><div id="worker_delta"></div></td>
+        </tr>
+        <tr id="coil_container" class="invisible">
+          <td>Coils:</td><td><div id="coil"></div></td><td><div id="coil_delta"></div></td>
+        </tr>
+      </table>
+    </td><td valign=top class="invisible" id="enlightenment_container">
+      Enlightenments: <span id="enlightenment"></span><span id="enlightenment_delta"></span>
+    </td></tr></table>    
+    <!-- VENDING, CAT, TRAVEL SELECTION -->
+    <span id="main_00">
+      <span id="cat_container" style="float:right">
+        <div id="cat" class="invisible"></div>
+        <div id="cat_talk" class="msg"></div> 
+      </span>
+      <table><tr valign="top">
+        <td>
+          <button id="free_money_btn">Free Money</button><br>
+          <button id="free_lunch_btn" class="invisible">Free Lunch</button><br>
+          <button id="salesman_btn" class="invisible">Dispatch Salesman</button><br>
+          <span id="vend_container" class="invisible">
+            <div id="vending_machine"></div>
+            <button id="vend_btn">Vend (50)</button>
+            <div class="msg" id="vend_msg"></div>
+          </span>
+        </td><td>
+          <span id="travel_container" class="invisible">
+          <div id="travel_btns">
+            <button id="go_btn">Go for a Walk</button><br>
+          </div>
+          <div class="msg" id="travel_msg"></div>
+          </span>          
+        </td></tr></table>
+          
+    </span>
+    <!-- MACHINE CONSTRUCTION -->
+    <span id="main_01" class="invisible intangible">
+      <div id="part_list" style="float:right"></div>
+      <div id="machine_grid"></div>
+      <button id="clear_btn">Clear Machine</button>
+      Visualization: <input  type="radio" name="machine_viz" value="on">ON
+      <input type="radio" checked name="machine_viz" value="off">OFF
+    </span>
+    <!-- DESTINATIONS -->
+    <span id="main_02" class="invisible intangible">
+      <span id="village_0" class="intangible">
+        <h1>Blue Village</h1>
+        <span style="white-space:pre">
+Crusty Old Man
+     [Ö]
+      │
+     / \
+Give me <span id="old_man_bead_cost">200</span> beads!
+        </span>
+      </span>
+      <span id="village_1" class="intangible">
+        <h1>Red Village</h1>
+        <pre>
+Country Gentleman
+     (@)
+      │
+     / \
+Pardon me, but might I have <span id="gentleman_tri_cost">1000</span> triangles?
+        </pre>
+      </span>
+      <span id="village_2" class="intangible">
+        <h1>Green Village</h1>
+        <pre>
+Your Cat
+     ^^                
+    (ºº)_____
+     \_______│~~~
+       ┘│  ┘│
+Meow, I want 5 free lunches!
+        </pre>
+      </span>
+      <span id="village_3" class="intangible">
+        <h1>Ivory Village</h1>
+        <pre>
+Your Cat
+     ^^                
+    (ºº)_____
+     \_______│~~~
+       ┘│  ┘│
+Now give me $100,000.
+        </pre>
+      </span>
+      <span id="village_4" class="intangible">
+        <h1>Gilded Town
+        <pre>
+       The Pope
+               /
+          /\   |
+         /  \  |/
+        |    | |>
+        \____/ |
+        ( .. ) |
+        /\__/\ |
+       /\ qp /\|
+      /  |  |  |
+     /|  |db| /\`\
+     | \ |  | \|_|
+     \  \|qp|  |
+      \__/  |  |
+      |/||db|  |
+      |  |  |  |
+      
+ Come see me when you have
+ given away all of your
+ posessions.
+         </pre>
+         </h1>
+      </span>
+      <button id="give_btn">Give</give>
+      <button id="go_back_btn">Go Back</button><br>
+    </span>
+    <!-- QUESTS -->
+    <span id="main_03" class="invisible intangible">
+      <H1>QUEST</H1><br>
+      <span id="quest_shop" class="intangible">
+      <div style="margin-bottom:5px;margin-top:-10px;"><button id="leave_shop_btn">Leave</button></div>
+      <span id="shop_inventory" class="shopParts"><div>Item 1</div><div>Item 2</div></span>
+      <span id="shop_guy" style="display:inline-block;vertical-align:top">
+      <pre>
+          O
+          |
+      ____|____
+  ___/_________\___
+   ((--|o|-|o|--))
+       | |_| |
+       \_____/
+         |-|
+    /={XXXXXX}=\
+    | {XXXXXX} |
+    |_{XXXXXX} |
+____( _|_______/_____
+|                    |
+|     S H O P        |
+</pre>
+<div style="margin:10px;">Cost: <span id="store_cost">0</span></div>
+<div style="margin:10px;">
+<input checked type="radio" name="store_money" value="C">C
+<input type="radio" name="store_money" value="B">B
+<input type="radio" name="store_money" value="$">$
+<input type="radio" name="store_money" value="T">T
+</div>
+<div style="margin:10px;">
+<button id="buy_button">Buy</button>
+</div>
+      </span>
+      <span id="player_inventory" class="shopParts"><div>Item 1</div><div>Item 2</div></span>
+      </span>
+      <table id="regular_quest">
+      <tr valign="top"><td width=430>
+      <span id="quest_narration"></span>
+      <span id="quest_bot" class="intangible">
+       <pre>
+         \\/////
+         |-----|
+         (@) (@)
+         \_____/
+       +___|_|___+
+      |  [+HHH+]  |
+      |  [+HHH+]  |
+      |  [+++++]  |
+     |_| [+++++] |_|
+         |_| |_|
+         |_| |_|
+         |_| |_|
+       (___) (___)</pre>
+      <span id="quest_bot_speech"></span>
+      </span>
+      <input type="button" id="continue_quest_btn" class="intangible" value="Let's Get Started!">
+      <br><br>
+      </td><td valign="top" id="colony" class="invisible">
+      <center>First Colony in the Wasteland</center>
+      <span style="white-space:pre">
++------------+------------+------------+------------+------------+
+|            |            | <span class=invisible id="bld_10A">..........</span> |            |            |
+|              <span class=invisible id="bld_06A">[ FARM  ]</span>    <span class=invisible id="bld_10B">..........</span>                  <span class=invisible id="bld_09A">[TOOLS]</span>  |
+|              <span class=invisible id="bld_06B">[       ]</span>    <span class=invisible id="bld_10C">..........</span>                  <span class=invisible id="bld_09B">[_____]</span>  |
+|            |    <span class=invisible id="bld_06C">| |</span>     | <span class=invisible id="bld_10D">..........</span> |            |     <span class=invisible id="bld_09C">| |</span>    |
++--        --+--  <span class=invisible id="bld_06D">| |</span>   --+--        --+--        --+--   <span class=invisible id="bld_09D">| |</span>  --+
+|            |    <span class=invisible id="bld_06E">| |</span>     | <span class=invisible id="bld_11A">..........</span> |            |     <span class=invisible id="bld_09E">| |</span>    |
+|  <span class=invisible id="bld_07A">[STORE]________</span><span class=invisible id="bld_06F">| |</span>       <span class=invisible id="bld_11B">..........</span>                    <span class=invisible id="bld_09F">| |</span>    |
+|  <span class=invisible id="bld_07B">[_____]--------</span><span class=invisible id="bld_06G">+ |</span>       <span class=invisible id="bld_11C">..........</span>                    <span class=invisible id="bld_09G">| |</span>    |
+|            |    <span class=invisible id="bld_06H">| |</span>     | <span class=invisible id="bld_11D">..........</span> |            |     <span class=invisible id="bld_09H">| |</span>    |
++--        --+--  <span class=invisible id="bld_06I">| |</span>   --+--        --+--        --+--   <span class=invisible id="bld_09I">| |</span>  --+
+|            |   <span class=invisible id="bld_05C">t</span><span class=invisible id="bld_06J">| |</span><span class=invisible id="bld_05D">t</span>    |            |            |     <span class=invisible id="bld_09J">| |</span>    |
+|  <span class=invisible id="bld_04A">[DEPOT]</span><span class=invisible id="bld_05A">______[HOVEL]</span><span class=invisible id="bld_08A">___________________[DORM ]</span><span class=invisible id="bld_09K">_________| |</span>    |
+|  <span class=invisible id="bld_04B">[<span id="depot_count">_____</span>]</span><span class=invisible id="bld_05B">------[_____]</span><span class=invisible id="bld_08B">-------------------[_____]</span><span class=invisible id="bld_09L">-----------+</span>    |
+|    <span class=invisible id="bld_04C">||</span>      |            |            |    <span class=invisible id="bld_02A">||</span>      |            |
++--  <span class=invisible id="bld_04D">||</span>    --+--        --+--        --+--  <span class=invisible id="bld_02B">||</span>    --+--        --+
+|  <span id="schoolA">/------\</span>  |            |            |    <span class=invisible id="bld_02C">||</span>      |            |
+|  [</span><font id="schoolLabel" title="Requires $$"
+class="broken"
+   >SCHOOL</font><space style="white-space:pre"
+         >]<span class=invisible id="bld_01A">_________________[<span id="factoryLabel">FACTORY</span>]</span>     <span class=invisible id="bld_02D">[     ]</span><span class=invisible id="bld_03A">______[  ]</span>      |
+|  [______]<span class=invisible id="bld_01B">-----------------[_______]</span>     <span class=invisible id="bld_02E">[_____]</span><span class=invisible id="bld_03B">------[__]</span>      |
+|            |            |            |            |            |
++------------+------------+------------+------------+------------+
+      </span><br>
+      <input type="button" id="school_state_btn" value="School: ON">       <span class=invisible id="bld_04E">Depot Cost: <span style="display:inline-block;vertical-align:top"><div>S10</div><div>V100</div><div>C1000</div><div>W10</div></span></span>   <span id="bld_01C" class="invisible">Factory: <div style="display:inline-block;vertical-align:top"><input type="radio" checked selected name="vend_asm" id="vend_assembly" value="1">Assemble
+<input type="radio" name="vend_asm" value="0" id="vend_disassembly">Disassemble</div></span>
+      </td></tr></table>
+    </span>
+    <!-- QUESTS -->
+    <span id="main_04" class="invisible intangible">
+      <H1>THE POPE's HOVEL</H1>
+      "Once you are enlightened, you can appreciate what you have...<br>Let me show you all that you have achieved,<br>and what you have yet to do."<br><br>
+      <span style="white-space:pre" id="achievements"></span>
+    </span>
+    <br><font color="#DDDDDD" style="cursor: pointer;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;" id="version">Version 1.14</font><br>
+    <span id="revision_history" class="invisible">
+      v1.0 Initial Release<br>
+      v1.1 Fix for saving enlightenment state<br>
+      v1.2 Saving through POST instead of GET for more reliability<br>
+      v1.3 Fix for Pope Bug and the first piece of Questiness<br>
+      v1.4 Color blindness tweak, more descriptive part vending, enlightenment brings more challenge, more quest progress.<br>
+      v1.5 Coils and the technicolor vending machine, new quests, school enable/disable button<br>
+      v1.6 Some Cat help, Pope quests, achievements, travelling salesmen<br>
+      v1.7 Show Depot cost, country gentleman quest<br>
+      v1.8 Vending Machine Hopper, Factory Disassembly<br>
+      v1.9 ???<br>
+      v1.10 Hide the robot after the 2M bead quest (bug fix), more achievements, shop at the end of the quests, shop specific special parts<br>
+      v1.11 Commas<br>
+      v1.12 Commas give way to scientific notation if needed, new win condition<br>
+      v1.13 Everybody has a price<br>
+      v1.14 A few new parts available in the store, fix for even x1000, ability to visualize machine input/output
+    </span>
+    <script type="application/dart" src="punktasia.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>
